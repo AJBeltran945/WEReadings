@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #333;
+    padding: 1rem;
+    color: white;
+    position: relative;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+.hamburger {
+    display: block;
+    width: 30px;
+    height: 22px;
+    cursor: pointer;
+    position: absolute;
+    top: 1.25rem;
+    right: 1rem;
+}
+
+.hamburger span {
+    display: block;
+    height: 4px;
+    background: white;
+    margin-bottom: 5px;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+nav {
+    display: none;
+    flex-direction: column;
+    background-color: #444;
+    padding: 1rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 0;
+}
+
+.menu-toggle:checked + .hamburger span:nth-child(1) {
+    transform: rotate(45deg) translateY(9px);
+}
+
+.menu-toggle:checked + .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle:checked + .hamburger span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-9px);
+}
+
+.menu-toggle:checked ~ nav {
+    display: flex;
+}
+
+@media (min-width: 768px) {
+    .hamburger {
+        display: none;
+    }
+
+    nav {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 1rem;
+        background: none;
+        padding: 0;
+    }
+}
