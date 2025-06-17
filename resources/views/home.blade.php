@@ -12,4 +12,8 @@
     <button>
         <a href="{{ route('water.create') }}">Add Water Reading</a>
     </button>
+
+    <button>
+        <a href="{{ route('index') }}">Show Readings</a>
+    </button>
 @endsection

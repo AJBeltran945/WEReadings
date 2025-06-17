@@ -7,12 +7,6 @@ use Illuminate\Http\Request;
 
 class waterController extends Controller
 {
-    public function index()
-    {
-        $waters = Water::orderByDesc('date')->get();
-        return view('water.index', compact('waters'));
-    }
-
     public function create()
     {
         return view('water.create');
@@ -21,38 +15,46 @@ class waterController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'number' => 'required|numeric',
-            'date' => 'required|date',
+            'date' => 'required|date|before_or_equal:today',
+            'reading' => 'required|numeric',
             'comment' => 'nullable|string',
         ]);
 
-        Water::create($request->all());
+        Water::create([
+            'date' => $request->date,
+            'number' => $request->reading,
+            'comment' => $request->comment,
+        ]);
 
-        return redirect()->route('water.index')->with('success', 'Water reading added successfully.');
+        return redirect()->route('home')->with('success', 'Water reading added successfully.');
     }
 
     public function edit(Water $water)
     {
-        return view('water.edit', compact('water'));
+        return view('partials.water.edit', compact('water'));
     }
 
     public function update(Request $request, Water $water)
     {
         $request->validate([
-            'number' => 'required|numeric',
-            'date' => 'required|date',
+            'date' => 'required|date|before_or_equal:today',
+            'reading' => 'required|numeric',
             'comment' => 'nullable|string',
         ]);
 
-        $water->update($request->all());
+        $water->update([
+            'date' => $request->date,
+            'number' => $request->reading,
+            'comment' => $request->comment,
+        ]);
 
-        return redirect()->route('water.index')->with('success', 'Water reading updated successfully.');
+        return redirect()->route('index')->with('success', 'Water reading updated successfully.');
     }
 
     public function destroy(Water $water)
     {
         $water->delete();
 
-        return redirect()->route('water.index')->with('success', 'Water reading deleted.');
+        return redirect()->route('index')->with('success', 'Water reading deleted.');
     }
 }
