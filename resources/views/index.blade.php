@@ -49,21 +49,22 @@
         <thead>
         <tr class="bg-gray-200">
             <th class="border border-gray-300 px-4 py-2">Date</th>
+            <th class="border border-gray-300 px-4 py-2">Previous</th>
             <th class="border border-gray-300 px-4 py-2">Reading</th>
-            <th class="border border-gray-300 px-4 py-2">Actions</th> <!-- Nueva columna -->
+            <th class="border border-gray-300 px-4 py-2">Difference</th>
+            <th class="border border-gray-300 px-4 py-2">Actions</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($electrics as $electric)
+        @foreach($electricReadings as $reading)
             <tr>
-                <td class="border border-gray-300 px-4 py-2">{{ \Carbon\Carbon::parse($electric->date)->format('m.d.Y') }}</td>
-                <td class="border border-gray-300 px-4 py-2">{{ number_format($electric->number) }}</td>
+                <td class="border border-gray-300 px-4 py-2">{{ \Carbon\Carbon::parse($reading->date)->format('m.d.Y') }}</td>
+                <td class="border border-gray-300 px-4 py-2">{{ number_format($reading->previous) }}</td>
+                <td class="border border-gray-300 px-4 py-2">{{ number_format($reading->number) }}</td>
+                <td class="border border-gray-300 px-4 py-2">{{ number_format($reading->diff) }}</td>
                 <td class="border border-gray-300 px-4 py-2 flex gap-2">
-                    <!-- Botón Editar -->
-                    <a href="{{ route('electric.edit', $electric->id) }}" class="text-blue-600 hover:underline">Edit</a>
-
-                    <!-- Botón Eliminar -->
-                    <form action="{{ route('electric.destroy', $electric->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                    <a href="{{ route('electric.edit', $reading->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                    <form action="{{ route('electric.destroy', $reading->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-red-600 hover:underline">Delete</button>
@@ -71,38 +72,36 @@
                 </td>
             </tr>
         @endforeach
-        <!-- Total row -->
+
         <tr class="bg-gray-100 font-bold">
-            <td class="border border-gray-300 px-4 py-2 text-right">Total Difference:</td>
-            <td class="border border-gray-300 px-4 py-2">
-                {{ number_format($electrics->last()->number - $electrics->first()->number) }}
-            </td>
+            <td colspan="3" class="border border-gray-300 px-4 py-2 text-right">Total Usage:</td>
+            <td class="border border-gray-300 px-4 py-2">{{ number_format($totalElectricDiff) }}</td>
             <td class="border border-gray-300 px-4 py-2"></td>
         </tr>
         </tbody>
     </table>
-
 
     <h1 class="text-2xl font-bold mb-4">Water Readings</h1>
     <table class="w-full table-auto border-collapse border border-blue-400">
         <thead>
         <tr class="bg-blue-200">
             <th class="border border-blue-300 px-4 py-2">Date</th>
+            <th class="border border-blue-300 px-4 py-2">Previous</th>
             <th class="border border-blue-300 px-4 py-2">Reading</th>
-            <th class="border border-blue-300 px-4 py-2">Actions</th> <!-- Nueva columna -->
+            <th class="border border-blue-300 px-4 py-2">Difference</th>
+            <th class="border border-blue-300 px-4 py-2">Actions</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($waters as $water)
+        @foreach($waterReadings as $reading)
             <tr>
-                <td class="border border-blue-300 px-4 py-2">{{ \Carbon\Carbon::parse($water->date)->format('m.d.Y') }}</td>
-                <td class="border border-blue-300 px-4 py-2">{{ number_format($water->number) }}</td>
+                <td class="border border-blue-300 px-4 py-2">{{ \Carbon\Carbon::parse($reading->date)->format('m.d.Y') }}</td>
+                <td class="border border-blue-300 px-4 py-2">{{ number_format($reading->previous) }}</td>
+                <td class="border border-blue-300 px-4 py-2">{{ number_format($reading->number) }}</td>
+                <td class="border border-blue-300 px-4 py-2">{{ number_format($reading->diff) }}</td>
                 <td class="border border-blue-300 px-4 py-2 flex gap-2">
-                    <!-- Botón Editar -->
-                    <a href="{{ route('water.edit', $water->id) }}" class="text-blue-600 hover:underline">Edit</a>
-
-                    <!-- Botón Eliminar -->
-                    <form action="{{ route('water.destroy', $water->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                    <a href="{{ route('water.edit', $reading->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                    <form action="{{ route('water.destroy', $reading->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-red-600 hover:underline">Delete</button>
@@ -110,15 +109,12 @@
                 </td>
             </tr>
         @endforeach
-        <tr class="bg-gray-100 font-bold">
-            <td class="border border-gray-300 px-4 py-2 text-right">Total Difference:</td>
-            <td class="border border-gray-300 px-4 py-2">
-                {{ number_format($waters->last()->number - $electrics->first()->number) }}
-            </td>
-            <td class="border border-gray-300 px-4 py-2"></td>
+
+        <tr class="bg-blue-100 font-bold">
+            <td colspan="3" class="border border-blue-300 px-4 py-2 text-right">Total Usage:</td>
+            <td class="border border-blue-300 px-4 py-2">{{ number_format($totalWaterDiff) }}</td>
+            <td class="border border-blue-300 px-4 py-2"></td>
         </tr>
         </tbody>
     </table>
-
-
 @endsection
