@@ -37,7 +37,7 @@ class electricController extends Controller
     public function update(Request $request, Electric $electric)
     {
         $request->validate([
-            'date' => 'required|date|before_or_equal:today',
+            'date' => 'required|date',
             'reading' => 'required|numeric',
             'comment' => 'nullable|string',
         ]);

@@ -37,7 +37,7 @@ class waterController extends Controller
     public function update(Request $request, Water $water)
     {
         $request->validate([
-            'date' => 'required|date|before_or_equal:today',
+            'date' => 'required|date',
             'reading' => 'required|numeric',
             'comment' => 'nullable|string',
         ]);

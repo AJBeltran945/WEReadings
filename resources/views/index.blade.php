@@ -9,7 +9,7 @@
         <div>
             <label for="month">Filter by Month:</label>
             <select name="month" id="month" class="border rounded px-2 py-1">
-                <option value="">-- Select Month --</option>
+                <option value="">-- All Months --</option>
                 @foreach($availableMonths as $month)
                     <option value="{{ $month }}" {{ request('month') == $month ? 'selected' : '' }}>
                         {{ \Carbon\Carbon::parse($month . '-01')->format('F Y') }}
@@ -32,10 +32,10 @@
         <div>
             <label for="specific_date">Specific Date:</label>
             <select name="specific_date" id="specific_date" class="border rounded px-2 py-1">
-                <option value="">-- Select a Date --</option>
+                <option value="">-- All Dates --</option>
                 @foreach($availableDates as $date)
                     <option value="{{ $date }}" {{ request('specific_date') == $date ? 'selected' : '' }}>
-                        {{ \Carbon\Carbon::parse($date)->format('d.m.Y') }}
+                        {{ \Carbon\Carbon::parse($date)->format('m.d.Y') }}
                     </option>
                 @endforeach
             </select>
@@ -56,11 +56,11 @@
         <tbody>
         @foreach($electrics as $electric)
             <tr>
-                <td class="border border-gray-300 px-4 py-2">{{ \Carbon\Carbon::parse($electric->date)->format('d.m.Y') }}</td>
+                <td class="border border-gray-300 px-4 py-2">{{ \Carbon\Carbon::parse($electric->date)->format('m.d.Y') }}</td>
                 <td class="border border-gray-300 px-4 py-2">{{ number_format($electric->number) }}</td>
                 <td class="border border-gray-300 px-4 py-2 flex gap-2">
                     <!-- Botón Editar -->
-                    <a href="{{ route('partials.electric.edit', $electric->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                    <a href="{{ route('electric.edit', $electric->id) }}" class="text-blue-600 hover:underline">Edit</a>
 
                     <!-- Botón Eliminar -->
                     <form action="{{ route('electric.destroy', $electric->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
@@ -71,6 +71,14 @@
                 </td>
             </tr>
         @endforeach
+        <!-- Total row -->
+        <tr class="bg-gray-100 font-bold">
+            <td class="border border-gray-300 px-4 py-2 text-right">Total Difference:</td>
+            <td class="border border-gray-300 px-4 py-2">
+                {{ number_format($electrics->last()->number - $electrics->first()->number) }}
+            </td>
+            <td class="border border-gray-300 px-4 py-2"></td>
+        </tr>
         </tbody>
     </table>
 
@@ -87,11 +95,11 @@
         <tbody>
         @foreach($waters as $water)
             <tr>
-                <td class="border border-blue-300 px-4 py-2">{{ \Carbon\Carbon::parse($water->date)->format('d.m.Y') }}</td>
+                <td class="border border-blue-300 px-4 py-2">{{ \Carbon\Carbon::parse($water->date)->format('m.d.Y') }}</td>
                 <td class="border border-blue-300 px-4 py-2">{{ number_format($water->number) }}</td>
                 <td class="border border-blue-300 px-4 py-2 flex gap-2">
                     <!-- Botón Editar -->
-                    <a href="{{ route('partials.water.edit', $water->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                    <a href="{{ route('water.edit', $water->id) }}" class="text-blue-600 hover:underline">Edit</a>
 
                     <!-- Botón Eliminar -->
                     <form action="{{ route('water.destroy', $water->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
@@ -102,6 +110,13 @@
                 </td>
             </tr>
         @endforeach
+        <tr class="bg-gray-100 font-bold">
+            <td class="border border-gray-300 px-4 py-2 text-right">Total Difference:</td>
+            <td class="border border-gray-300 px-4 py-2">
+                {{ number_format($waters->last()->number - $electrics->first()->number) }}
+            </td>
+            <td class="border border-gray-300 px-4 py-2"></td>
+        </tr>
         </tbody>
     </table>
 
